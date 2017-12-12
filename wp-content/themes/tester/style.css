@@ -4590,3 +4590,8 @@ body.tester {
 .tester .site-footer .widget-column.footer-widget-2 p{
 	margin-bottom: 0;
 }
+.tester .panel_lk_recall.pageform {
+	display: block;
+	z-index: 1;
+	position: relative;
+}

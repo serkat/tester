@@ -34,7 +34,6 @@ http://blog.sodhanalibrary.com/2014/01/responsive-menu-or-navigation-bar-with.ht
             </div>
         </div>
     </div>
-
     <div id="rcl-tabs">
         
             <?php do_action('rcl_area_menu'); ?>
