@@ -88,6 +88,7 @@
           that.$selectableUl.focus();
         })
       }
+      that.select_all();
 
       var selectedValues = ms.find('option:selected').map(function(){ return $(this).val(); }).get();
       that.select(selectedValues, 'init');

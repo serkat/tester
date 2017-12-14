@@ -837,7 +837,7 @@ if ( ! class_exists( 'Q_Export_User_Data' ) )
 			);
 
             // test field array ##
-            #$this->pr( $fields );
+//            $this->pr( $fields );
 
             // build the document headers ##
             $headers = array();
@@ -1272,12 +1272,17 @@ if ( ! class_exists( 'Q_Export_User_Data' ) )
 ?>
         <form method="post" action="" enctype="multipart/form-data">
             <?php wp_nonce_field( 'q-eud-export-user-page_export', '_wpnonce-q-eud-export-user-page_export' ); ?>
-            <table class="form-table">
+            <table class="form-table qweqwe">
 <?php
 
                 // allow admin to select user meta fields to export ##
                 global $wpdb;
+//                var_dump($wpdb->users);
                 $meta_keys = $wpdb->get_results( "SELECT distinct(meta_key) FROM $wpdb->usermeta" );
+//                $meta_keys = $wpdb->get_results( "SELECT distinct(meta_key) FROM $wpdb->usermeta" );
+//                $meta_keys = $wpdb->get_results( "SELECT distinct(meta_key) FROM $wpdb->users LEFT JOIN $wpdb->usermeta ON wp_usermeta.user_id=wp_users.ID");
+//                $meta_keys = $wpdb->get_results( SELECT ALL FROM $wpdb->usermeta LEFT JOIN $wpdb->users);
+
 
                 // get meta_key value from object ##
                 $meta_keys = wp_list_pluck( $meta_keys, 'meta_key' );
@@ -1314,7 +1319,7 @@ if ( ! class_exists( 'Q_Export_User_Data' ) )
                 $meta_keys_system = apply_filters( 'export_user_data_meta_keys_system', $meta_keys_system );
 
                 // test array ##
-                #echo '<pre>'; var_dump($meta_keys); echo '</pre>';
+                //echo '<pre>'; var_dump($meta_keys); echo '</pre>';
 
                 // check if we got anything ? ##
                 if ( $meta_keys ) {
@@ -1332,48 +1337,57 @@ if ( ! class_exists( 'Q_Export_User_Data' ) )
                     </th>
                     <td>
                         <select multiple="multiple" id="usermeta" name="usermeta[]">
-<?php
-
-                            foreach ( $meta_keys as $key ) {
-
-                                #echo "\n\t<option value='" . esc_attr( $role ) . "'>$name</option>";
-
-                                // display $key ##
-                                $display_key = $key;
-
-                                // rename programs field ##
-                                if ( $display_key == 'member_of_club' ){
-                                    $display_key = 'program';
-                                }
-
-                                // tidy ##
-                                $display_key = str_replace( "_", " ", ucwords( $display_key ) );
-
-                                #echo "<label for='".esc_attr( $key )."' title='".esc_attr( $key )."'><input id='".esc_attr( $key )."' type='checkbox' name='usermeta[]' value='".esc_attr( $key )."'/> $display_key</label><br />";
-
-                                // class ##
-                                $usermeta_class = 'normal';
-
-                                foreach ( $meta_keys_system as $drop ) {
-
-                                    if ( strpos( $key, $drop ) !== false ) {
-
-                                        // https://wordpress.org/support/topic/bugfix-numbers-in-export-headers?replies=1
-                                        // removed $key = assignment, as not required ##
-                                        if ( ( array_search( $key, $meta_keys ) ) !== false ) {
-
-                                            $usermeta_class = 'system';
-
-                                        }
-
-                                    }
-
-                                }
-
-                                // print key ##
-                                echo "<option value='".esc_attr( $key )."' title='".esc_attr( $key )."' class='".$usermeta_class."'>$display_key</option>";
-
-                            }
+                            <?php
+                                echo "<option value='last_name' title='Famile' class='normal'>Famile</option>";
+                                echo "<option value='first_name' title='Name' class='normal'>Name</option>";
+                                echo "<option value='otchestvo_45' title='MName' class='normal'>MName</option>";
+                                echo "<option value='nickname' title='Email' class='normal'>Email</option>";
+                                echo "<option value='telefon_72' title='Phone' class='normal'>Phone</option>";
+                                echo "<option value='uchebnoe_zavedenie_64' title='SchoolName' class='normal'>SchoolName</option>";
+                                echo "<option value='indeks_uchebnogo_zavedeniya_51' title='PostIndex' class='normal'>PostIndex</option>";
+                                echo "<option value='fakticheskij_adres_uchebnogo_zavedeniya_54' title='Address' class='normal'>Address</option>";
+                            ?>
+<!---->
+<!--                            foreach ( $meta_keys as $key ) {-->
+<!---->
+<!--//                                echo "\n\t<option value='" . esc_attr( $role ) . "'>$name</option>";-->
+<!---->
+<!--                                // display $key ##-->
+<!--                                $display_key = $key;-->
+<!---->
+<!--                                // rename programs field ##-->
+<!--                                if ( $display_key == 'member_of_club' ){-->
+<!--                                    $display_key = 'program';-->
+<!--                                }-->
+<!---->
+<!--                                // tidy ##-->
+<!--                                $display_key = str_replace( "_", " ", ucwords( $display_key ) );-->
+<!---->
+<!--                                #echo "<label for='".esc_attr( $key )."' title='".esc_attr( $key )."'><input id='".esc_attr( $key )."' type='checkbox' name='usermeta[]' value='".esc_attr( $key )."'/> $display_key</label><br />";-->
+<!---->
+<!--                                // class ##-->
+<!--                                $usermeta_class = 'normal';-->
+<!---->
+<!--                                foreach ( $meta_keys_system as $drop ) {-->
+<!---->
+<!--                                    if ( strpos( $key, $drop ) !== false ) {-->
+<!---->
+<!--                                        // https://wordpress.org/support/topic/bugfix-numbers-in-export-headers?replies=1-->
+<!--                                        // removed $key = assignment, as not required ##-->
+<!--                                        if ( ( array_search( $key, $meta_keys ) ) !== false ) {-->
+<!---->
+<!--                                            $usermeta_class = 'system';-->
+<!---->
+<!--                                        }-->
+<!---->
+<!--                                    }-->
+<!---->
+<!--                                }-->
+<!---->
+<!--                                // print key ##-->
+<!--                                echo "<option value='".esc_attr( $key )."' title='".esc_attr( $key )."' class='".$usermeta_class."'>$display_key</option>";-->
+<!---->
+<!--                            }-->
 ?>
                         </select>
                         <p class="description"><?php
@@ -1383,7 +1397,20 @@ if ( ! class_exists( 'Q_Export_User_Data' ) )
                         ?></p>
                     </td>
                 </tr>
-<?php
+                <tr valign="top">
+                    <th scope="row"><label><?php _e( 'Registered', 'export-user-data' ); ?></label></th>
+                    <td>
+                        <input type="text" id="q_eud_users_start_date" name="start_date" value="<?php echo $this->start_date; ?>" class="start-datepicker" />
+                        <input type="text" id="q_eud_users_end_date" name="end_date" value="<?php echo $this->end_date; ?>" class="end-datepicker" />
+                        <p class="description"><?php
+                            printf(
+                                __( 'Pick a start and end user registration date to limit the results.', 'export-user-data' )
+                            );
+                            ?></p>
+                    </td>
+                </tr>
+
+	                <?php
 
                 } // meta_keys found ##
 
@@ -1494,8 +1521,8 @@ if ( ! class_exists( 'Q_Export_User_Data' ) )
                         <input id='user_fields' type='checkbox' name='user_fields' value='0' <?php checked( isset ( $this->user_fields ) ? intval ( $this->user_fields ) : '', 0 ); ?> />
                         <p class="description"><?php
 
-							#$this->log( 'user_fields: '.$this->user_fields );
-							#echo 'user_fields: '. $this->user_fields;
+							$this->log( 'user_fields: '.$this->user_fields );
+							echo 'user_fields: '. $this->user_fields;
 
                             printf(
                                 __( 'Include Standard user profile fields, such as user_login. <a href="%s" target="_blank">%s</a>', 'export-user-data' )
@@ -1587,18 +1614,18 @@ if ( ! class_exists( 'Q_Export_User_Data' ) )
                 } // clubs ##
 
 ?>
-                <tr valign="top" class="toggleable">
-                    <th scope="row"><label><?php _e( 'Registered', 'export-user-data' ); ?></label></th>
-                    <td>
-                        <input type="text" id="q_eud_users_start_date" name="start_date" value="<?php echo $this->start_date; ?>" class="start-datepicker" />
-                        <input type="text" id="q_eud_users_end_date" name="end_date" value="<?php echo $this->end_date; ?>" class="end-datepicker" />
-                        <p class="description"><?php
-                            printf(
-                                __( 'Pick a start and end user registration date to limit the results.', 'export-user-data' )
-                            );
-                        ?></p>
-                    </td>
-                </tr>
+<!--                <tr valign="top" class="toggleable">-->
+<!--                    <th scope="row"><label>--><?php //_e( 'Registered', 'export-user-data' ); ?><!--</label></th>-->
+<!--                    <td>-->
+<!--                        <input type="text" id="q_eud_users_start_date" name="start_date" value="--><?php //echo $this->start_date; ?><!--" class="start-datepicker" />-->
+<!--                        <input type="text" id="q_eud_users_end_date" name="end_date" value="--><?php //echo $this->end_date; ?><!--" class="end-datepicker" />-->
+<!--                        <p class="description">--><?php
+//                            printf(
+//                                __( 'Pick a start and end user registration date to limit the results.', 'export-user-data' )
+//                            );
+//                        ?><!--</p>-->
+<!--                    </td>-->
+<!--                </tr>-->
 
                 <tr valign="top" class="toggleable">
                     <th scope="row"><label><?php _e( 'Limit Range', 'export-user-data' ); ?></label></th>
@@ -1666,71 +1693,71 @@ if ( ! class_exists( 'Q_Export_User_Data' ) )
                     </td>
                 </tr>
 
-                <tr valign="top" class="remember">
-                   <th scope="row"><label for="q_eud_save_options"><?php _e( 'Сохраненые опции', 'export-user-data' ); ?></label></th>
-                    <td>
-
-                        <div class="row">
-                            <input type="text" class="regular-text" name="save_new_export_name" id="q_eud_save_options_new_export" placeholder="<?php _e( 'Export Name', 'export-user-data' ); ?>" value="<?php echo isset( $_POST['export_name'] ) ? $_POST['export_name'] : '' ; ?>">
-                            <input type="submit" id="save_export" class="button-primary" name="save_export" value="<?php _e( 'Save', 'export-user-data' ); ?>" />
-                        </div>
-                        <?php
-
-                        // check if the user has any saved exports ##
-                        if ( $this->get_user_options() ) {
-
-?>
-                        <div class="row">
-                            <select name="export_name" id="q_eud_save_options" class="regular-text">
+<!--                <tr valign="top" class="remember">-->
+<!--                   <th scope="row"><label for="q_eud_save_options">--><?php //_e( 'Сохраненые опции', 'export-user-data' ); ?><!--</label></th>-->
+<!--                    <td>-->
+<!---->
+<!--                        <div class="row">-->
+<!--                            <input type="text" class="regular-text" name="save_new_export_name" id="q_eud_save_options_new_export" placeholder="--><?php //_e( 'Export Name', 'export-user-data' ); ?><!--" value="--><?php //echo isset( $_POST['export_name'] ) ? $_POST['export_name'] : '' ; ?><!--">-->
+<!--                            <input type="submit" id="save_export" class="button-primary" name="save_export" value="--><?php //_e( 'Save', 'export-user-data' ); ?><!--" />-->
+<!--                        </div>-->
+<!--                        --><?php
+//
+//                        // check if the user has any saved exports ##
+//                        if ( $this->get_user_options() ) {
+//
+//?>
+<!--                        <div class="row">-->
+<!--                            <select name="export_name" id="q_eud_save_options" class="regular-text">-->
 <?php
-
-                                // loop over each saved export ##
-                                foreach( $this->get_user_options() as $export ) {
-
-                                    // select Loaded export name, if selected ##
-                                    if (
-                                        isset( $_POST['load_export'] )
-                                        && isset( $_POST['export_name'] )
-                                        && ( $_POST['export_name'] == $export )
-                                    ) {
-
-                                        echo "<option selected value='$export'>$export</option>";
-
-                                    // just list previous export name ##
-                                    } else {
-
-                                        echo "<option value='$export'>$export</option>";
-
-                                    }
-
-                                }
-
-?>
-                            </select>
-
-                            <input type="submit" id="load_export" class="button-primary" name="load_export" value="<?php _e( 'Load', 'export-user-data' ); ?>" />
-                            <input type="submit" id="delete_export" class="button-primary" name="delete_export" value="<?php _e( 'Delete', 'export-user-data' ); ?>" />
+//
+//                                // loop over each saved export ##
+//                                foreach( $this->get_user_options() as $export ) {
+//
+//                                    // select Loaded export name, if selected ##
+//                                    if (
+//                                        isset( $_POST['load_export'] )
+//                                        && isset( $_POST['export_name'] )
+//                                        && ( $_POST['export_name'] == $export )
+//                                    ) {
+//
+//                                        echo "<option selected value='$export'>$export</option>";
+//
+//                                    // just list previous export name ##
+//                                    } else {
+//
+//                                        echo "<option value='$export'>$export</option>";
+//
+//                                    }
+//
+//                                }
+//
+//?>
+<!--                            </select>-->
+<!---->
+<!--                            <input type="submit" id="load_export" class="button-primary" name="load_export" value="--><?php //_e( 'Load', 'export-user-data' ); ?><!--" />-->
+<!--                            <input type="submit" id="delete_export" class="button-primary" name="delete_export" value="--><?php //_e( 'Delete', 'export-user-data' ); ?><!--" />-->
 <?php
-
-                            }
-
-?>
-                            </div>
-                            <p class="description"><?php _e( 'Сохраните, загрузите или удалите ваши сохраненные опции.', 'export-user-data' ); ?></p>
-
-                    </td>
-                </tr>
-
-                <tr valign="top">
-                    <th scope="row">
-                        <label for="q_eud_xprofile"><?php _e( 'Advanced Options', 'export-user-data' ); ?></label>
-                    </th>
-                    <td>
-                        <div class="toggle">
-                            <a href="#"><?php _e( 'Show', 'export-user-data' ); ?></a>
-                        </div>
-                    </td>
-                </tr>
+//
+//                            }
+//
+//?>
+<!--                            </div>-->
+<!--                            <p class="description">--><?php //_e( 'Сохраните, загрузите или удалите ваши сохраненные опции.', 'export-user-data' ); ?><!--</p>-->
+<!---->
+<!--                    </td>-->
+<!--                </tr>-->
+<!---->
+<!--                <tr valign="top">-->
+<!--                    <th scope="row">-->
+<!--                        <label for="q_eud_xprofile">--><?php //_e( 'Advanced Options', 'export-user-data' ); ?><!--</label>-->
+<!--                    </th>-->
+<!--                    <td>-->
+<!--                        <div class="toggle">-->
+<!--                            <a href="#">--><?php //_e( 'Show', 'export-user-data' ); ?><!--</a>-->
+<!--                        </div>-->
+<!--                    </td>-->
+<!--                </tr>-->
 
             </table>
             <p class="submit">
